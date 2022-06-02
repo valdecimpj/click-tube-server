@@ -35,11 +35,16 @@ export class VideosService{
         return {
             id: videoId,
             name: randomWords.join(' '),
-            tags: shuffledTags.slice(0, amountOfTags)
+            tags: shuffledTags.slice(0, amountOfTags),
+            views: 0
         }
     }
 
     public getAllVideos():VideoModel[]{
         return this.videos;
+    }
+
+    public clickVideo(clickedVideoId: number) {
+        this.videos.find(video => video.id == clickedVideoId).views++;
     }
 }
