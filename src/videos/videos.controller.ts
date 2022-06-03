@@ -1,4 +1,5 @@
 import { Controller, Get, NotFoundException, Param, Put, Session } from "@nestjs/common";
+import { TagInterestModel } from "src/models/tag-interest.model";
 import { UserModel } from "src/models/user.model";
 import { VideoModel } from "src/models/video.model";
 import { UsersSessionService } from "src/users/users-session.service";
@@ -11,8 +12,27 @@ export class VideosController{
     }
 
     @Get()
-    public getVideos():VideoModel[]{
-        return this.videosService.getAllVideos();
+    public getVideos(@Session() session:Record<string, any>):VideoModel[]{
+        if(this.usersSessionService.userStillDoesntExistInSession(session))
+            this.usersSessionService.createUserInSession(session);
+        let userInSession = this.usersSessionService.getUserFromSession(session);
+        let tagsOfInterestToUser = userInSession.interestPerTag;
+        return this.videosService.getVideosOrderedByTagsOfInterestToUser(tagsOfInterestToUser);
+    }
+
+    private getVideosInterestingToUserInSession(tagsOfInterestToUser:TagInterestModel[]) {
+        let videosWithUserInterestRating:{video:VideoModel, userInterestRating:number}[] = []
+        allVideos.forEach(video => videosWithUserInterestRating.push({video: video, userInterestRating: this.calculateUserInterestRatingForVideo(tagsOfInterestToUser, video)}));
+        let videosWithUserInterestOrderedByUserInterestRating:{video:VideoModel, userInterestRating:number}[] = videosWithUserInterestRating.sort((videoA, videoB) => videoB.userInterestRating - videoA.userInterestRating)
+        let videosOrderedByUserInterest:VideoModel[] = [];
+        videosWithUserInterestOrderedByUserInterestRating.forEach(videoWithUserInterest => videosOrderedByUserInterest.push(videoWithUserInterest.video));
+        return videosOrderedByUserInterest;
+    }
+
+    private calculateUserInterestRatingForVideo(tagsOfInterestToUser: TagInterestModel[], video: VideoModel): number {
+        let videoSimilarityToUserTaste:number = 0;
+        video.tags.forEach(videoTag => videoSimilarityToUserTaste += tagsOfInterestToUser.find(interestInTag => interestInTag.tagName == videoTag).interest);
+        return videoSimilarityToUserTaste;
     }
 
     @Put()
