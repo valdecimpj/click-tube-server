@@ -1,10 +1,13 @@
-import { Controller, Get, Param, Put, Session } from "@nestjs/common";
+import { Controller, Get, NotFoundException, Param, Put, Session } from "@nestjs/common";
+import { UserModel } from "src/models/user.model";
 import { VideoModel } from "src/models/video.model";
+import { UsersSessionService } from "src/users/users-session.service";
+import { UsersService } from "src/users/users.service";
 import { VideosService } from "./videos.service";
 
 @Controller('videos')
 export class VideosController{
-    public constructor(private videosService:VideosService){
+    public constructor(private videosService:VideosService, private usersSessionService:UsersSessionService, private usersService:UsersService){
     }
 
     @Get()
@@ -13,12 +16,18 @@ export class VideosController{
     }
 
     @Put()
-    public clickVideo(@Param('clickedVideoId') clickedVideoId:number, @Session() session:Record<string, any>):void{       
-        this.updateUserPreferences(session)
+    public clickVideo(@Param('clickedVideoId') clickedVideoId:number, @Session() session:Record<string, any>):void{
+        let clickedVideo:VideoModel = this.videosService.getVideoById(clickedVideoId);
+        if(clickedVideo == undefined)
+            throw new NotFoundException("A video with with provided Id could not be found.")
+        this.updateUserPreferences(session, clickedVideo.tags)
         this.videosService.clickVideo(clickedVideoId);
     }
 
-    private updateUserPreferences(session: Record<string, any>) {
-        throw new Error("Method not implemented.");
+    private updateUserPreferences(session: Record<string, any>, clickedTags:string[]) {
+        if(this.usersSessionService.userStillDoesntExistInSession(session))
+            this.usersSessionService.createUserInSession(session);
+        let user:UserModel = this.usersSessionService.getUserFromSession(session);
+        this.usersService.updateUsersPreferences(user, clickedTags);
     }
 }

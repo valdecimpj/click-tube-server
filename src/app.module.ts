@@ -6,6 +6,7 @@ import { LoginController } from './login/login.controller';
 import { LoginService } from './login/login.service';
 import { RandomWordsService } from './random-words/random-words.service';
 import { TagsService } from './tags/tags.service';
+import { UsersSessionService } from './users/users-session.service';
 import { UsersController } from './users/users.controller';
 import { UsersService } from './users/users.service';
 import { VideosController } from './videos/videos.controller';
@@ -25,7 +26,8 @@ import { VideosService } from './videos/videos.service';
     RandomWordsService,
     UsersService,
     VideosService,
-    TagsService
+    TagsService,
+    UsersSessionService
   ],
 })
 export class AppModule {}

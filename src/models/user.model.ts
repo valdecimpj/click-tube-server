@@ -1,8 +1,5 @@
-import { TagInterestModel } from "./tag-interest.model";
+import { UserShareableInformationModel } from "./user-shareable-information.model";
 
-export class UserModel{
-    public name:string;
-    public email:string;
+export class UserModel extends UserShareableInformationModel{
     public password:string;
-    public tags:TagInterestModel[]
 }

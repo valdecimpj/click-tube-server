@@ -47,4 +47,8 @@ export class VideosService{
     public clickVideo(clickedVideoId: number) {
         this.videos.find(video => video.id == clickedVideoId).views++;
     }
+
+    getVideoById(clickedVideoId: number): VideoModel {
+        return this.videos.find(video => video.id == clickedVideoId);
+    }
 }

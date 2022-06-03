@@ -1,4 +1,4 @@
 export class TagInterestModel{
-    public tag:string;
+    public tagName:string;
     public interest:number;
 }
