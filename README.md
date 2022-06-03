@@ -1,3 +1,38 @@
+## Routes
+### /videos
+| Method | Action | Body | Params | Result |
+|--------|--------|------|--------|--------|
+| GET | Gets all videos | - | - | [VideoModel](#videomodel)[] |
+| PUT | Clicks on video | {clickedVideoId:number} | - | - |
+### /users
+| Method | Action | Body | Params | Result |
+|--------|--------|------|--------|--------|
+| GET | Gets information from current user session | - | - | [UserShareableInformationModel](#usershareableinformationmodel) |
+### /tags
+| Method | Action | Body | Params | Result |
+|--------|--------|------|--------|--------|
+| GET | Gets all tags | - | - | string[] |
+
+## Models
+### VideoModel
+| Name | Type | Accessibility |
+| ------------ | ---- | ---- |
+| id | number | public |
+| tags | string[] | public |
+| name | string | public |
+| views | number | public |
+### UserShareableInformationModel
+| Name | Type | Accessibility |
+| ------------ | ---- | ---- |
+| name | string | public |
+| email | string | public |
+| interestPerTag | [TagInterestModel](#taginterestmodel)[] | public |
+### TagInterestModel
+| Name | Type | Accessibility |
+| ------------ | ---- | ---- |
+| tagName | string | public |
+| interestAmount | number | public |
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>
