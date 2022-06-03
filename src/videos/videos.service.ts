@@ -27,7 +27,7 @@ export class VideosService{
 
     private calculateUserInterestRatingForVideo(tagsOfInterestToUser: TagInterestModel[], video: VideoModel): number {
         let videoSimilarityToUserTaste:number = 0;
-        video.tags.forEach(videoTag => videoSimilarityToUserTaste += tagsOfInterestToUser.find(interestInTag => interestInTag.tagName == videoTag).interest);
+        video.tags.forEach(videoTag => videoSimilarityToUserTaste += tagsOfInterestToUser.find(interestInTag => interestInTag.tagName == videoTag).interestAmount);
         return videoSimilarityToUserTaste;
     }
 
@@ -45,8 +45,8 @@ export class VideosService{
     }
 
     private async generateRandomVideo(videoId:number, tags: string[]): Promise<VideoModel> {
-        let amountOfWordsInName = Math.floor(Math.random()*5);
-        let amountOfTags = Math.floor(Math.random()*3);
+        let amountOfWordsInName = Math.floor(Math.random()*4)+1;
+        let amountOfTags = Math.floor(Math.random()*3)+2;
         let randomWords = (await firstValueFrom(this.randomWordsService.generateRandomWord(amountOfWordsInName))).data
         let shuffledTags = tags.sort(() => 0.5 - Math.random())
         return {

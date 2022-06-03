@@ -24,9 +24,9 @@ export class UsersSessionService{
     }
 
     private createNewTagInterestList(allTags: string[]) {
-        let newUserTagInterests: TagInterestModel[];
+        let newUserTagInterests: TagInterestModel[] = [];
         allTags.forEach(
-            tag => newUserTagInterests.push({ interest: 100, tagName: tag })
+            tag => newUserTagInterests.push({ interestAmount: 100, tagName: tag })
         );
         return newUserTagInterests;
     }

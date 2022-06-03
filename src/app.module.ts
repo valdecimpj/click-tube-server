@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { LoginController } from './login/login.controller';
 import { LoginService } from './login/login.service';
 import { RandomWordsService } from './random-words/random-words.service';
+import { TagController } from './tags/tags.controller';
 import { TagsService } from './tags/tags.service';
 import { UsersSessionService } from './users/users-session.service';
 import { UsersController } from './users/users.controller';
@@ -18,7 +19,8 @@ import { VideosService } from './videos/videos.service';
     AppController,
     LoginController,
     UsersController,
-    VideosController
+    VideosController,
+    TagController
   ],
   providers: [
     AppService,
