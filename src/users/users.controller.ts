@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Session } from "@nestjs/common";
+import { Controller, Delete, Get, Post, Session } from "@nestjs/common";
 import { UserShareableInformationModel } from "src/models/user-shareable-information.model";
 import { UsersSessionService } from "./users-session.service";
 
@@ -12,5 +12,10 @@ export class UsersController{
         if(this.usersSessionService.userStillDoesntExistInSession(session))
             this.usersSessionService.createUserInSession(session);
         return this.usersSessionService.getUserFromSession(session);
+    }
+
+    @Delete()
+    resetSessionUsersInformation(@Session() session:Record<string, any>):void{
+        this.usersSessionService.createUserInSession(session)
     }
 }
