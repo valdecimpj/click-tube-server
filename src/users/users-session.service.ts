@@ -15,7 +15,7 @@ export class UsersSessionService{
         let allTags = this.tagsService.getAllTags();
         let newUserTagInterests: TagInterestModel[] = this.createNewTagInterestList(allTags);
         let newUser:UserModel = {
-            name:'guest',
+            name:'Convidado',
             email:null,
             password:null,
             interestPerTag:newUserTagInterests,

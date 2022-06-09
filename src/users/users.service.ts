@@ -25,6 +25,8 @@ export class UsersService{
 
     updateUsersPreferences(user: UserModel, clickedVideo: VideoModel) {
         user.userVideoHistory.push(clickedVideo)
+        if(user.userVideoHistory.length > 10)
+            user.userVideoHistory.shift();
         let tagsNotIncludedInVideo = user.interestPerTag.filter(tagInterest => !clickedVideo.tags.includes(tagInterest.tagName));
         let amountSubtractedFromExcludedTags = 0
         tagsNotIncludedInVideo.forEach(tag => amountSubtractedFromExcludedTags += this.removeAndReturnInterestFromTag(tag))
