@@ -20,21 +20,6 @@ export class VideosController{
         return this.videosService.getVideosOrderedByTagsOfInterestToUser(tagsOfInterestToUser);
     }
 
-    private getVideosInterestingToUserInSession(tagsOfInterestToUser:TagInterestModel[]) {
-        let videosWithUserInterestRating:{video:VideoModel, userInterestRating:number}[] = []
-        allVideos.forEach(video => videosWithUserInterestRating.push({video: video, userInterestRating: this.calculateUserInterestRatingForVideo(tagsOfInterestToUser, video)}));
-        let videosWithUserInterestOrderedByUserInterestRating:{video:VideoModel, userInterestRating:number}[] = videosWithUserInterestRating.sort((videoA, videoB) => videoB.userInterestRating - videoA.userInterestRating)
-        let videosOrderedByUserInterest:VideoModel[] = [];
-        videosWithUserInterestOrderedByUserInterestRating.forEach(videoWithUserInterest => videosOrderedByUserInterest.push(videoWithUserInterest.video));
-        return videosOrderedByUserInterest;
-    }
-
-    private calculateUserInterestRatingForVideo(tagsOfInterestToUser: TagInterestModel[], video: VideoModel): number {
-        let videoSimilarityToUserTaste:number = 0;
-        video.tags.forEach(videoTag => videoSimilarityToUserTaste += tagsOfInterestToUser.find(interestInTag => interestInTag.tagName == videoTag).interest);
-        return videoSimilarityToUserTaste;
-    }
-
     @Put()
     public clickVideo(@Param('clickedVideoId') clickedVideoId:number, @Session() session:Record<string, any>):void{
         let clickedVideo:VideoModel = this.videosService.getVideoById(clickedVideoId);
