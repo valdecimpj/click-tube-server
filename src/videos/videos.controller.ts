@@ -1,5 +1,4 @@
-import { Controller, Get, NotFoundException, Param, Put, Session } from "@nestjs/common";
-import { TagInterestModel } from "src/models/tag-interest.model";
+import { Body, Controller, Get, NotFoundException, Param, Put, Session } from "@nestjs/common";
 import { UserModel } from "src/models/user.model";
 import { VideoModel } from "src/models/video.model";
 import { UsersSessionService } from "src/users/users-session.service";
@@ -21,7 +20,7 @@ export class VideosController{
     }
 
     @Put()
-    public clickVideo(@Param('clickedVideoId') clickedVideoId:number, @Session() session:Record<string, any>):void{
+    public clickVideo(@Body('clickedVideoId') clickedVideoId:number, @Session() session:Record<string, any>):void{
         let clickedVideo:VideoModel = this.videosService.getVideoById(clickedVideoId);
         if(clickedVideo == undefined)
             throw new NotFoundException("A video with with provided Id could not be found.")

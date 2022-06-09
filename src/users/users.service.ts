@@ -27,12 +27,12 @@ export class UsersService{
         tagsNotIncludedInVideo.forEach(tag => amountSubtractedFromExcludedTags += this.removeAndReturnInterestFromTag(tag))
         let tagsIncludedInVideo = user.interestPerTag.filter(tagInterest => clickedTags.includes(tagInterest.tagName));
         let numberToSplitExtractedInterest = tagsIncludedInVideo.length;
-        tagsIncludedInVideo.forEach(tag => tag.interest += amountSubtractedFromExcludedTags/numberToSplitExtractedInterest);
+        tagsIncludedInVideo.forEach(tag => tag.interestAmount += amountSubtractedFromExcludedTags/numberToSplitExtractedInterest);
     }
 
     private removeAndReturnInterestFromTag(tag: TagInterestModel) {
-        let amountRemoved = tag.interest/2
-        tag.interest /= 2;
+        let amountRemoved = tag.interestAmount/2
+        tag.interestAmount /= 2;
         return amountRemoved;
     }
 
