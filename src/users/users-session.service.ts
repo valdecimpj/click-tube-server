@@ -18,7 +18,8 @@ export class UsersSessionService{
             name:'guest',
             email:null,
             password:null,
-            interestPerTag:newUserTagInterests
+            interestPerTag:newUserTagInterests,
+            userVideoHistory:[]
         }
         session.user = newUser;
     }

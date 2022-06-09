@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { TagInterestModel } from "src/models/tag-interest.model";
 import { UserModel } from "src/models/user.model";
+import { VideoModel } from "src/models/video.model";
 
 @Injectable()
 export class UsersService{
@@ -11,7 +12,8 @@ export class UsersService{
             email:'teste@gmail.com',
             name:'teste',
             password:'teste',
-            interestPerTag:[]
+            interestPerTag:[],
+            userVideoHistory:[]
         };
 
         this.users = new Map<string,UserModel>(
@@ -21,11 +23,12 @@ export class UsersService{
         );
     }
 
-    updateUsersPreferences(user: UserModel, clickedTags: string[]) {
-        let tagsNotIncludedInVideo = user.interestPerTag.filter(tagInterest => !clickedTags.includes(tagInterest.tagName));
+    updateUsersPreferences(user: UserModel, clickedVideo: VideoModel) {
+        user.userVideoHistory.push(clickedVideo)
+        let tagsNotIncludedInVideo = user.interestPerTag.filter(tagInterest => !clickedVideo.tags.includes(tagInterest.tagName));
         let amountSubtractedFromExcludedTags = 0
         tagsNotIncludedInVideo.forEach(tag => amountSubtractedFromExcludedTags += this.removeAndReturnInterestFromTag(tag))
-        let tagsIncludedInVideo = user.interestPerTag.filter(tagInterest => clickedTags.includes(tagInterest.tagName));
+        let tagsIncludedInVideo = user.interestPerTag.filter(tagInterest => clickedVideo.tags.includes(tagInterest.tagName));
         let numberToSplitExtractedInterest = tagsIncludedInVideo.length;
         tagsIncludedInVideo.forEach(tag => tag.interestAmount += amountSubtractedFromExcludedTags/numberToSplitExtractedInterest);
     }

@@ -15,14 +15,20 @@ export class VideosService{
         this.generateListOfRandomVideos(amountOfVideos, tags).then(videos => this.videos = videos);
     }
 
-    public getVideosOrderedByTagsOfInterestToUser(tagsOfInterestToUser:TagInterestModel[]):VideoModel[] {
+    public getVideosOrderedByTagsOfInterestToUser(tagsOfInterestToUser:TagInterestModel[], userVideoHistory:VideoModel[]):VideoModel[] {
         let videosWithUserInterestRating:{video:VideoModel, userInterestRating:number}[] = []
         let allVideos = this.getAllVideos();
         allVideos.forEach(video => videosWithUserInterestRating.push({video: video, userInterestRating: this.calculateUserInterestRatingForVideo(tagsOfInterestToUser, video)}));
         let videosWithUserInterestOrderedByUserInterestRating:{video:VideoModel, userInterestRating:number}[] = videosWithUserInterestRating.sort((videoA, videoB) => videoB.userInterestRating - videoA.userInterestRating)
         let videosOrderedByUserInterest:VideoModel[] = [];
         videosWithUserInterestOrderedByUserInterestRating.forEach(videoWithUserInterest => videosOrderedByUserInterest.push(videoWithUserInterest.video));
+        if(this.userHasNotWatchedTooManyVideos(userVideoHistory))
+            videosOrderedByUserInterest = videosOrderedByUserInterest.filter(video => !userVideoHistory.includes(video));
         return videosOrderedByUserInterest;
+    }
+
+    private userHasNotWatchedTooManyVideos(userVideoHistory: VideoModel[]) {
+        return userVideoHistory.length < this.videos.length / 2;
     }
 
     private calculateUserInterestRatingForVideo(tagsOfInterestToUser: TagInterestModel[], video: VideoModel): number {

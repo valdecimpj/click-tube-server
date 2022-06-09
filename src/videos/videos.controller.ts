@@ -16,7 +16,7 @@ export class VideosController{
             this.usersSessionService.createUserInSession(session);
         let userInSession = this.usersSessionService.getUserFromSession(session);
         let tagsOfInterestToUser = userInSession.interestPerTag;
-        return this.videosService.getVideosOrderedByTagsOfInterestToUser(tagsOfInterestToUser);
+        return this.videosService.getVideosOrderedByTagsOfInterestToUser(tagsOfInterestToUser, userInSession.userVideoHistory);
     }
 
     @Put()
@@ -24,14 +24,14 @@ export class VideosController{
         let clickedVideo:VideoModel = this.videosService.getVideoById(clickedVideoId);
         if(clickedVideo == undefined)
             throw new NotFoundException("A video with with provided Id could not be found.")
-        this.updateUserPreferences(session, clickedVideo.tags)
+        this.updateUserPreferences(session, clickedVideo)
         this.videosService.clickVideo(clickedVideoId);
     }
 
-    private updateUserPreferences(session: Record<string, any>, clickedTags:string[]) {
+    private updateUserPreferences(session: Record<string, any>, clickedVideo:VideoModel) {
         if(this.usersSessionService.userStillDoesntExistInSession(session))
             this.usersSessionService.createUserInSession(session);
         let user:UserModel = this.usersSessionService.getUserFromSession(session);
-        this.usersService.updateUsersPreferences(user, clickedTags);
+        this.usersService.updateUsersPreferences(user, clickedVideo);
     }
 }
