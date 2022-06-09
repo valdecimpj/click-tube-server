@@ -9,7 +9,14 @@ async function bootstrap() {
     session({
       secret: 'asdqwe ewqdsa',
       resave: false,
-      saveUninitialized : false,
+      saveUninitialized : true,
+      proxy: true,
+      name: 'click-tube-server',
+      cookie: {
+        secure: true,
+        httpOnly: false,
+        sameSite: 'none'
+      }
     })
   );
   app.enableCors({origin:["https://click-tube-client.herokuapp.com"], credentials:true});
