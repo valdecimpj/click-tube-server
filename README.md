@@ -1,6 +1,6 @@
 # Documentation
 ## Description
-This application was created as a avaliative activity during a college course on a discipline about Artificial Intelligence, on the topic of recommendation systems specifically.
+This application was created as an avaliative activity during a college course on a discipline about artificial intelligence, specifically on the topic of recommendation systems.
 ## Routes
 ### /videos
 | Method | Action | Body | Params | Result |
